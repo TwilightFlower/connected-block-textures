@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "io.github.nuclearfarts.cbt.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"client": [
+		"ModelLoaderMixin",
+		"ReloadableResourceManagerImplMixin",
+		"ClientWorldMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
