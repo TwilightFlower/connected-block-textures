@@ -50,13 +50,13 @@ public abstract class BaseCTMConfig<Self extends BaseCTMConfig<Self>> implements
 	
 	public BaseCTMConfig(Properties properties, Identifier location, ResourceManager manager, SpriteProviderFactory<Self> bakedModelFactory, String packName) throws IOException {
 		if(properties.containsKey("matchTiles")) {
-			tileMatcher = Arrays.stream(properties.getProperty("matchTiles").split(" ")).map(Identifier::new).collect(Collectors.toCollection(HashSet::new))::contains;
+			tileMatcher = Arrays.stream(properties.getProperty("matchTiles").split(" ")).map(s -> CBTUtil.prependId(new Identifier(s), "block/")).collect(Collectors.toCollection(HashSet::new))::contains;
 		} else {
 			tileMatcher = null;
 		}
 		
 		if(properties.containsKey("matchBlocks")) {
-			blockMatcher = Arrays.stream(properties.getProperty("matchBlocks").split(" ")).map(ModelIdentifier::new).map(CBTUtil::stripBlankVariants).collect(Collectors.toCollection(HashSet::new))::contains;
+			blockMatcher = Arrays.stream(properties.getProperty("matchBlocks").split(" ")).map(Identifier::new).collect(Collectors.toCollection(HashSet::new))::contains;
 		} else {
 			blockMatcher = Predicates.alwaysTrue();
 		}
