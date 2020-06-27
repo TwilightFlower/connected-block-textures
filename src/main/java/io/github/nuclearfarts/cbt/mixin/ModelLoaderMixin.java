@@ -41,6 +41,8 @@ public abstract class ModelLoaderMixin {
 	@Redirect(method = "<init>", at = @At(value = "INVOKE_STRING", target = "net/minecraft/util/profiler/Profiler.swap(Ljava/lang/String;)V", args = "ldc=textures"))
 	private void injectCbtModels(Profiler on, String str) {
 		on.swap("ctm");
+		ConnectedBlockTextures.overrideIdentifierCharRestriction = true;
+		ConnectedBlockTextures.identifierOverrideThread = Thread.currentThread();
 		List<CTMConfig> data = new ArrayList<>();
 		Collection<Identifier> propertiesIds = resourceManager.findResources("optifine/ctm", s -> s.endsWith(".properties"));
 		for(Identifier id : propertiesIds) {
@@ -75,6 +77,7 @@ public abstract class ModelLoaderMixin {
 				}
 			}
 		});
+		ConnectedBlockTextures.overrideIdentifierCharRestriction = false;
 		on.swap(str);
 	}
 

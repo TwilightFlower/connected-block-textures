@@ -33,6 +33,8 @@ public class ConnectedBlockTextures implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("ConnectedBlockTextures");
 
 	public static CBTResourcePack resourcePack;
+	public static boolean overrideIdentifierCharRestriction = false;
+	public static Thread identifierOverrideThread = null;
 	public static final Object2IntMap<String> RESOURCE_PACK_PRIORITY_MAP = new Object2IntOpenHashMap<>();
 	
 	public static final short[] CTM_TO_IDEALIZED_BITHACK = {165, 173, 189, 181, 174, 179, 206, 186, 122, 91, 222, 250, 167, 175, 191, 183, 205, 117, 93, 115, 218, 94, 95, 123, 231, 239, 255, 247, 207, 190, 238, 187, 254, 251, 126, 219, 229, 237, 253, 245, 125, 243, 221, 119, 223, 127, 90};

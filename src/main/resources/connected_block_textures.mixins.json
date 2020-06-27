@@ -5,7 +5,8 @@
 	"client": [
 		"ModelLoaderMixin",
 		"ReloadableResourceManagerImplMixin",
-		"ClientWorldMixin"
+		"ClientWorldMixin",
+		"IdentifierMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
