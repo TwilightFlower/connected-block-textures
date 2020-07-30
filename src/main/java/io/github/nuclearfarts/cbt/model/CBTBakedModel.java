@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockRenderView;
 
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ForwardingBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
@@ -24,9 +23,6 @@ public class CBTBakedModel extends ForwardingBakedModel {
 	protected final SpriteProvider[] spriteProviders;
 	
 	public CBTBakedModel(BakedModel baseModel, SpriteProvider[] spriteProviders) {
-		if(!((FabricBakedModel)baseModel).isVanillaAdapter()) {
-			throw new IllegalArgumentException("CBT does not support non-vanilla models! This may be caused by having multiple resource packs affecting the same block.");
-		}
 		wrapped = baseModel;
 		this.spriteProviders = spriteProviders;
 	}
