@@ -24,10 +24,8 @@ public abstract class ReloadableResourceManagerImplMixin implements ReloadableRe
 	private void injectCBTPack(Executor prepareExecutor, Executor applyExecutor, CompletableFuture<Unit> initialStage, List<ResourcePack> packs, CallbackInfoReturnable<ResourceReloadMonitor> cir) {
 		ConnectedBlockTextures.RESOURCE_PACK_PRIORITY_MAP.clear();
 		for(int i = 0; i < packs.size(); i++) {
-			System.out.println(i + " " + packs.get(i).getName());
 			ConnectedBlockTextures.RESOURCE_PACK_PRIORITY_MAP.put(packs.get(i).getName(), i);
 		}
-		System.out.println("sans undertale");
 		packs.add(ConnectedBlockTextures.resourcePack = new CBTResourcePack(this));
 	}
 
