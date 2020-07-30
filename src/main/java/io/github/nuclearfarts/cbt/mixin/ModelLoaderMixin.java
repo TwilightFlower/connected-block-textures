@@ -55,7 +55,7 @@ public abstract class ModelLoaderMixin {
 			}
 		}
 		
-		Set<String> priorityFails = new HashSet<>();
+		Set<Identifier> priorityFails = new HashSet<>();
 		MutableCachingSupplier<Collection<SpriteIdentifier>> textureCached = new MutableCachingSupplier<>();
 		unbakedModels.forEach((id, model) -> {
 			if(id instanceof ModelIdentifier) {
@@ -74,7 +74,7 @@ public abstract class ModelLoaderMixin {
 	}
 	
 	@Unique
-	private UnbakedModel checkCtmConfigs(ModelIdentifier id, UnbakedModel model, MutableCachingSupplier<Collection<SpriteIdentifier>> textureCached, List<CTMConfig> data, Set<String> priorityFails) {
+	private UnbakedModel checkCtmConfigs(ModelIdentifier id, UnbakedModel model, MutableCachingSupplier<Collection<SpriteIdentifier>> textureCached, List<CTMConfig> data, Set<Identifier> priorityFails) {
 		Set<CTMConfig> configs = new TreeSet<>();
 		boolean foundNewConfigs = false;
 		do {
@@ -82,15 +82,9 @@ public abstract class ModelLoaderMixin {
 			UnbakedModel javaPls = model;
 			textureCached.set(() -> javaPls.getTextureDependencies(((ModelLoader) (Object) this)::getOrLoadModel, VoidSet.get()));
 			for(CTMConfig c : data) {
-				try {
-					if(c.affectsModel(id, textureCached) && CBTUtil.allMatchThrowable(textureCached.get(), s -> checkPack(s, c.getResourcePackPriority()))) {
-						if(configs.add(c)) {
-							newConfigs.add(c);
-						}
-					}
-				} catch (IOException e) {
-					if(priorityFails.add(e.getMessage())) {
-						ConnectedBlockTextures.LOGGER.error("Error checking resource pack priority", e);
+				if(c.affectsModel(id, textureCached) && CBTUtil.allMatchThrowable(textureCached.get(), s -> checkPack(s, c.getResourcePackPriority(), priorityFails))) {
+					if(configs.add(c)) {
+						newConfigs.add(c);
 					}
 				}
 			}
@@ -103,9 +97,17 @@ public abstract class ModelLoaderMixin {
 	}
 
 	@Unique
-	private boolean checkPack(SpriteIdentifier spriteId, int ctmPackPriority) throws IOException {
+	private boolean checkPack(SpriteIdentifier spriteId, int ctmPackPriority, Set<Identifier> fails) {
 		Identifier texId = spriteId.getTextureId();
-		String spritePack = resourceManager.getResource(new Identifier(texId.getNamespace(), "textures/" + texId.getPath() + ".png")).getResourcePackName();
+		String spritePack;
+		try {
+			spritePack = resourceManager.getResource(new Identifier(texId.getNamespace(), "textures/" + texId.getPath() + ".png")).getResourcePackName();
+		} catch(IOException e) {
+			if(fails.add(texId)) {
+				ConnectedBlockTextures.LOGGER.error("Error checking resource pack priority", e);
+			}
+			return true;
+		}
 		return ConnectedBlockTextures.RESOURCE_PACK_PRIORITY_MAP.getInt(spritePack) <= ctmPackPriority;
 	}
 }
