@@ -18,8 +18,10 @@ import io.github.nuclearfarts.cbt.util.function.MutableCachingSupplier;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import org.spongepowered.asm.mixin.Final;
@@ -53,24 +55,14 @@ public abstract class ModelLoaderMixin {
 			}
 		}
 		
+		Set<String> priorityFails = new HashSet<>();
 		MutableCachingSupplier<Collection<SpriteIdentifier>> textureCached = new MutableCachingSupplier<>();
 		unbakedModels.forEach((id, model) -> {
 			if(id instanceof ModelIdentifier) {
 				ModelIdentifier modelId = (ModelIdentifier) id;
 				if(!modelId.getVariant().equals("inventory")) {
-					SortedSet<CTMConfig> configs = new TreeSet<>();
-					textureCached.set(() -> model.getTextureDependencies(((ModelLoader) (Object) this)::getOrLoadModel, VoidSet.get()));
-					for(CTMConfig c : data) {
-						try {
-							if(c.affectsModel(modelId, textureCached) && CBTUtil.allMatchThrowable(textureCached.get(), s -> checkPack(s, c.getResourcePackPriority()))) {
-								configs.add(c);
-							}
-						} catch (IOException e) {
-							ConnectedBlockTextures.LOGGER.error("Error checking resource pack priority", e);
-						}
-					}
-					if(!configs.isEmpty()) {
-						UnbakedModel newModel = new CBTUnbakedModel(model, configs.toArray(new CTMConfig[configs.size()]));
+					UnbakedModel newModel = checkCtmConfigs(modelId, model, textureCached, data, priorityFails);
+					if(newModel != model) {
 						unbakedModels.put(id, newModel);
 						modelsToBake.put(id, newModel);
 					}
@@ -79,6 +71,35 @@ public abstract class ModelLoaderMixin {
 		});
 		ConnectedBlockTextures.overrideIdentifierCharRestriction = false;
 		on.swap(str);
+	}
+	
+	@Unique
+	private UnbakedModel checkCtmConfigs(ModelIdentifier id, UnbakedModel model, MutableCachingSupplier<Collection<SpriteIdentifier>> textureCached, List<CTMConfig> data, Set<String> priorityFails) {
+		Set<CTMConfig> configs = new TreeSet<>();
+		boolean foundNewConfigs = false;
+		do {
+			SortedSet<CTMConfig> newConfigs = new TreeSet<>();
+			UnbakedModel javaPls = model;
+			textureCached.set(() -> javaPls.getTextureDependencies(((ModelLoader) (Object) this)::getOrLoadModel, VoidSet.get()));
+			for(CTMConfig c : data) {
+				try {
+					if(c.affectsModel(id, textureCached) && CBTUtil.allMatchThrowable(textureCached.get(), s -> checkPack(s, c.getResourcePackPriority()))) {
+						if(configs.add(c)) {
+							newConfigs.add(c);
+						}
+					}
+				} catch (IOException e) {
+					if(priorityFails.add(e.getMessage())) {
+						ConnectedBlockTextures.LOGGER.error("Error checking resource pack priority", e);
+					}
+				}
+			}
+			foundNewConfigs = !newConfigs.isEmpty();
+			if(foundNewConfigs) {
+				model = new CBTUnbakedModel(model, configs.toArray(new CTMConfig[configs.size()]));
+			}
+		} while(foundNewConfigs);
+		return model;
 	}
 
 	@Unique

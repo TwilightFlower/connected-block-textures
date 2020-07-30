@@ -8,6 +8,7 @@ import net.minecraft.client.render.block.BlockModels;
 
 public enum ConnectionConditions implements BiPredicate<BlockState, BlockState> {
 	BLOCK((t, o) -> t.getBlock() == o.getBlock()),
+	BLOCKS((t, o) -> t.getBlock() == o.getBlock()),
 	STATE((t, o) -> t == o),
 	MATERIAL((t, o) -> t.getMaterial() == o.getMaterial()),
 	TILE((t, o) -> {
