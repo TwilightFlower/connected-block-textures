@@ -1,10 +1,11 @@
 package io.github.nuclearfarts.cbt.tile.provider;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -15,12 +16,12 @@ public class CompactTileProvider implements TileProvider {
 	private final List<SpriteIdentifier> spriteIds = new ArrayList<>();
 	
 	public CompactTileProvider(Tile[] origTiles) throws IOException {
-		BufferedImage[] origImages = new BufferedImage[5];
+		NativeImage[] origImages = new NativeImage[5];
 		for(int i = 0; i < 5; i++) {
 			origImages[i] = origTiles[i].getImage();
 		}
 		for(int i = 0; i <= 46; i++) {
-			BufferedImage tile = new BufferedImage(origImages[0].getWidth(), origImages[0].getHeight(), BufferedImage.TYPE_INT_ARGB);
+			NativeImage tile = new NativeImage(origImages[0].getWidth(), origImages[0].getHeight(), true);
 			short bithack = ConnectedBlockTextures.CTM_TO_IDEALIZED_BITHACK[i];
 			//Up-left. up-left-upleft
 			
@@ -99,14 +100,14 @@ public class CompactTileProvider implements TileProvider {
 		}
 	}
 	
-	private static void blitQuarter(int offsetX, int offsetY, BufferedImage src, BufferedImage dst) {
+	private static void blitQuarter(int offsetX, int offsetY, NativeImage src, NativeImage dst) {
 		int w = src.getWidth() / 2;
 		int h = src.getHeight() / 2;
 		int x = w * offsetX;
 		int y = h * offsetY;
 		for(int i = x; i < w + x; i++) {
 			for(int j = y; j < h + y; j++) {
-				dst.setRGB(i, j, src.getRGB(i, j));
+				dst.setPixelColor(i, j, src.getPixelColor(i, j));
 			}
 		}
 	}

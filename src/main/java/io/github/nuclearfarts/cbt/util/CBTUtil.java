@@ -1,11 +1,11 @@
 package io.github.nuclearfarts.cbt.util;
 
-import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.util.Identifier;
 
@@ -77,13 +77,9 @@ public class CBTUtil {
 		return new Identifier(modelId.getNamespace(), modelId.getPath());
 	}
 
-	public static BufferedImage copy(BufferedImage image) {
-		BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		for(int x = 0; x < image.getWidth(); x++) {
-			for(int y = 0; y < image.getHeight(); y++) {
-				newImage.setRGB(x, y, image.getRGB(x, y));
-			}
-		}
+	public static NativeImage copy(NativeImage image) {
+		NativeImage newImage = new NativeImage(image.getFormat(), image.getWidth(), image.getHeight(), true);
+		newImage.copyFrom(image);
 		return newImage;
 	}
 	
@@ -93,5 +89,12 @@ public class CBTUtil {
 			mod += modulo;
 		}
 		return mod;
+	}
+	
+	public static int toABGR(int argb) {
+		return ((argb >> 24) << 24) |          // Alpha
+	            ((argb >> 16) & 0xFF) |         // Red  -> Blue
+	            ((argb >> 8) & 0xFF) << 8 |     // Green
+	            ((argb) & 0xFF) << 16;          // Blue -> Red
 	}
 }

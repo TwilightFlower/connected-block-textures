@@ -1,12 +1,12 @@
 package io.github.nuclearfarts.cbt.tile;
 
-import java.awt.image.BufferedImage;
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.util.Identifier;
 
 public class ImageBackedTile implements Tile {
-	private final BufferedImage image;
+	private final NativeImage image;
 	
-	public ImageBackedTile(BufferedImage image) {
+	public ImageBackedTile(NativeImage image) {
 		this.image = image;
 	}
 
@@ -21,7 +21,7 @@ public class ImageBackedTile implements Tile {
 	}
 
 	@Override
-	public BufferedImage getImage() {
+	public NativeImage getImage() {
 		return image;
 	}
 

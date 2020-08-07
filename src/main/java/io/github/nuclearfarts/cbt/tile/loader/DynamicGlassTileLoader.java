@@ -1,11 +1,9 @@
 package io.github.nuclearfarts.cbt.tile.loader;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.imageio.ImageIO;
-
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
@@ -17,11 +15,11 @@ public class DynamicGlassTileLoader implements TileLoader {
 	private final Tile[] tiles = new Tile[5];
 	
 	public DynamicGlassTileLoader(Properties properties, Identifier location, ResourceManager manager) throws IOException {
-		BufferedImage glass = ImageIO.read(manager.getResource(new Identifier(properties.getProperty("cbt_special_glass_texture"))).getInputStream());
-		int background = Integer.parseUnsignedInt(properties.getProperty("cbt_special_glass_background"), 16);
+		NativeImage glass = NativeImage.read(manager.getResource(new Identifier(properties.getProperty("cbt_special_glass_texture"))).getInputStream());
+		int background = CBTUtil.toABGR(Integer.parseUnsignedInt(properties.getProperty("cbt_special_glass_background"), 16));
 		tiles[0] = new ImageBackedTile(glass); //all-borders
 		
-		BufferedImage work;
+		NativeImage work;
 		work = CBTUtil.copy(glass);
 		hLine(work, 0, 0, 16, background);
 		hLine(work, 0, 15, 16, background);
@@ -52,15 +50,15 @@ public class DynamicGlassTileLoader implements TileLoader {
 		return tiles;
 	}
 
-	private static void hLine(BufferedImage image, int xStart, int y, int length, int color) {
+	private static void hLine(NativeImage image, int xStart, int y, int length, int color) {
 		for(int x = 0; x < length; x++) {
-			image.setRGB(x + xStart, y, color);
+			image.setPixelColor(x + xStart, y, color);
 		}
 	}
 	
-	private static void vLine(BufferedImage image, int x, int yStart, int length, int color) {
+	private static void vLine(NativeImage image, int x, int yStart, int length, int color) {
 		for(int y = 0; y < length; y++) {
-			image.setRGB(x, y + yStart, color);
+			image.setPixelColor(x, y + yStart, color);
 		}
 	}
 }

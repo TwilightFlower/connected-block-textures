@@ -6,7 +6,8 @@
 		"ModelLoaderMixin",
 		"ReloadableResourceManagerImplMixin",
 		"ClientWorldMixin",
-		"IdentifierMixin"
+		"IdentifierMixin",
+		"NativeImageAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

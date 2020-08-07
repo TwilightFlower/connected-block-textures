@@ -1,10 +1,8 @@
 package io.github.nuclearfarts.cbt.tile;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
@@ -28,8 +26,8 @@ public class ResourceBackedTile implements Tile {
 	}
 
 	@Override
-	public BufferedImage getImage() throws IOException {
-		return ImageIO.read(resourceManager.getResource(resource).getInputStream());
+	public NativeImage getImage() throws IOException {
+		return NativeImage.read(resourceManager.getResource(resource).getInputStream());
 	}
 
 }

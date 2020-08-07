@@ -1,10 +1,10 @@
 package io.github.nuclearfarts.cbt.resource;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.Channels;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,16 +13,16 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.imageio.ImageIO;
-
 import com.google.common.collect.ImmutableSet;
 
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.resource.metadata.ResourceMetadataReader;
 import net.minecraft.util.Identifier;
 
+import io.github.nuclearfarts.cbt.mixin.NativeImageAccessor;
 import io.github.nuclearfarts.cbt.tile.Tile;
 
 public class CBTResourcePack implements ResourcePack {
@@ -47,17 +47,14 @@ public class CBTResourcePack implements ResourcePack {
 		aliases.put(location, to);
 	}
 	
-	public void putImage(String location, BufferedImage image) {
+	public void putImage(String location, NativeImage image) {
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-		try {
-			ImageIO.write(image, "png", byteOut);
-		} catch (IOException e) {
-			throw new RuntimeException("IOException writing to bytearrayoutputstream!?", e);
-		}
+		((NativeImageAccessor) (Object) image).invokeWrite(Channels.newChannel(byteOut));
+		image.close();
 		putResource(location, byteOut.toByteArray());
 	}
 	
-	public Identifier dynamicallyPutImage(BufferedImage image) {
+	public Identifier dynamicallyPutImage(NativeImage image) {
 		String texPath = "gen/" + genCounter++;
 		putImage("assets/connectedblocktextures/textures/" + texPath + ".png", image);
 		return new Identifier("connectedblocktextures", texPath);
@@ -73,13 +70,12 @@ public class CBTResourcePack implements ResourcePack {
 		if(tile.hasResource()) {
 			alias(location, tile.getResource());
 		} else {
-			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 			try {
-				ImageIO.write(tile.getImage(), "png", byteStream);
+				putImage(location, tile.getImage());
 			} catch (IOException e) {
-				throw new RuntimeException("IOException writing to byte array output stream!?", e);
+				//should be unreachable
+				e.printStackTrace();
 			}
-			resources.put(location, byteStream.toByteArray());
 		}
 	}
 
