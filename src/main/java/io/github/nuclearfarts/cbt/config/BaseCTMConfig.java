@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Predicates;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -48,7 +49,7 @@ public abstract class BaseCTMConfig<Self extends BaseCTMConfig<Self>> implements
 	protected final String fileName;
 	protected final SpriteProviderFactory<Self> spriteProviderFactory;
 	
-	public BaseCTMConfig(Properties properties, Identifier location, ResourceManager manager, SpriteProviderFactory<Self> bakedModelFactory, String packName) throws IOException {
+    public BaseCTMConfig(Properties properties, Identifier location, ResourceManager manager, SpriteProviderFactory<Self> bakedModelFactory, String packName) throws IOException {
 		if(properties.containsKey("matchTiles")) {
 			tileMatcher = Arrays.stream(properties.getProperty("matchTiles").split(" ")).map(s -> CBTUtil.prependId(new Identifier(s), "block/")).collect(Collectors.toCollection(HashSet::new))::contains;
 		} else {
@@ -63,7 +64,9 @@ public abstract class BaseCTMConfig<Self extends BaseCTMConfig<Self>> implements
 		
 		Predicate<Biome> biomeMatcher;
 		if(properties.containsKey("biomes")) {
-			biomeMatcher = Arrays.stream(properties.getProperty("biomes").split(" ")).map(Identifier::new).map(Registry.BIOME::get).collect(Collectors.toCollection(HashSet::new))::contains;
+		    @SuppressWarnings("resource")
+            Registry<Biome> biomes = MinecraftClient.getInstance().world.getRegistryManager().get(Registry.BIOME_KEY);
+			biomeMatcher = Arrays.stream(properties.getProperty("biomes").split(" ")).map(Identifier::new).map(biomes::get).collect(Collectors.toCollection(HashSet::new))::contains;
 		} else {
 			biomeMatcher = null;
 		}
