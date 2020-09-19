@@ -96,7 +96,7 @@ public class CompactTileProvider implements TileProvider {
 				blitQuarter(1, 1, origImages[1], tile);
 			}
 			
-			spriteIds.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEX, ConnectedBlockTextures.resourcePack.dynamicallyPutImage(tile)));
+			spriteIds.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, ConnectedBlockTextures.resourcePack.dynamicallyPutImage(tile)));
 		}
 	}
 	

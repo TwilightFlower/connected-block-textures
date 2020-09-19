@@ -34,7 +34,7 @@ public class CBTBakedModel extends ForwardingBakedModel {
 	
 	@Override
 	public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-		SpriteFinder spriteFinder = SpriteFinder.get(MinecraftClient.getInstance().getBakedModelManager().method_24153(SpriteAtlasTexture.BLOCK_ATLAS_TEX));
+		SpriteFinder spriteFinder = SpriteFinder.get(MinecraftClient.getInstance().getBakedModelManager().method_24153(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE));
 		context.pushTransform(quad -> {
 			/*if(sideMatcher.test(quad.nominalFace())) {
 				Sprite spr = spriteFinder.find(quad, 0);

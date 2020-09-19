@@ -16,7 +16,7 @@ public class BasicTileProvider implements TileProvider {
 	
 	public BasicTileProvider(Tile[] tiles) {
 		for(Tile tile : tiles) {
-			ids.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEX, ConnectedBlockTextures.resourcePack.dynamicallyPutTile(tile)));
+			ids.add(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, ConnectedBlockTextures.resourcePack.dynamicallyPutTile(tile)));
 		}
 	}
 
