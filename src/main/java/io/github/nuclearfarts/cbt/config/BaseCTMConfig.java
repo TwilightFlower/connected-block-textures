@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Predicates;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.SpriteIdentifier;
@@ -63,7 +64,9 @@ public abstract class BaseCTMConfig<Self extends BaseCTMConfig<Self>> implements
 		
 		Predicate<Biome> biomeMatcher;
 		if(properties.containsKey("biomes")) {
-			biomeMatcher = Arrays.stream(properties.getProperty("biomes").split(" ")).map(Identifier::new).map(Registry.BIOME::get).collect(Collectors.toCollection(HashSet::new))::contains;
+			@SuppressWarnings("resource")
+			Registry<Biome> biomes = MinecraftClient.getInstance().world.getRegistryManager().get(Registry.BIOME_KEY);
+				biomeMatcher = Arrays.stream(properties.getProperty("biomes").split(" ")).map(Identifier::new).map(biomes::get).collect(Collectors.toCollection(HashSet::new))::contains;
 		} else {
 			biomeMatcher = null;
 		}
