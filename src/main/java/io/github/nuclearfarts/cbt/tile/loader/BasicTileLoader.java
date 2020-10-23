@@ -22,7 +22,6 @@ public class BasicTileLoader implements TileLoader {
 	}
 	
 	public BasicTileLoader(String[] tileDefs, Identifier location, ResourceManager manager) {
-		System.out.println("Loading tiles for " + location);
 		List<Tile> loadedTiles = new ArrayList<>();
 		for(String tileDef : tileDefs) {
 			if(RANGE_PATTERN.matcher(tileDef).find()) {

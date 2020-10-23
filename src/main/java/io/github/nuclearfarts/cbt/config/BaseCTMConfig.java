@@ -64,9 +64,9 @@ public abstract class BaseCTMConfig<Self extends BaseCTMConfig<Self>> implements
 		
 		Predicate<Biome> biomeMatcher;
 		if(properties.containsKey("biomes")) {
-			@SuppressWarnings("resource")
+			//@SuppressWarnings("resource")
 			Registry<Biome> biomes = MinecraftClient.getInstance().world.getRegistryManager().get(Registry.BIOME_KEY);
-				biomeMatcher = Arrays.stream(properties.getProperty("biomes").split(" ")).map(Identifier::new).map(biomes::get).collect(Collectors.toCollection(HashSet::new))::contains;
+			biomeMatcher = Arrays.stream(properties.getProperty("biomes").split(" ")).map(Identifier::new).map(biomes::get).collect(Collectors.toCollection(HashSet::new))::contains;
 		} else {
 			biomeMatcher = null;
 		}
@@ -78,7 +78,6 @@ public abstract class BaseCTMConfig<Self extends BaseCTMConfig<Self>> implements
 				String[] split = range.split("-");
 				int min = Integer.parseInt(split[0]);
 				int max = Integer.parseInt(split[1]);
-				System.out.println("height from " + min + " to " + max);
 				heightTests.add(i -> min <= i && i <= max);
 			}
 			if(heightTests.size() == 1) {

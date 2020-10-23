@@ -16,7 +16,6 @@ public class CursedBiomeThing implements ColorResolver {
 		CursedBiomeThing cursed = POOL.get();
 		view.getColor(pos, cursed);
 		Biome result = cursed.result;
-		System.out.println("Cursed biome for " + pos + " is " + result);
 		POOL.readd(cursed);
 		return result;
 	}
