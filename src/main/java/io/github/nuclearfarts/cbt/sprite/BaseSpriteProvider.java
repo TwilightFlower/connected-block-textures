@@ -59,82 +59,56 @@ public abstract class BaseSpriteProvider implements SpriteProvider {
 		result[2][2] = getDown(view, to, right);
 		return result;
 	}
-	
+
 	protected BlockState getUp(BlockRenderView view, Direction to, BlockPos pos) {
 		return view.getBlockState(getUpPos(to, pos));
-	}
-	
-	protected BlockPos getUpPos(Direction to, BlockPos pos) {
-		switch(to) {
-		case UP:
-			//return pos.north();
-		case DOWN:
-			return pos.south();
-		case NORTH:
-		case SOUTH:
-		case EAST:
-		case WEST:
-			return pos.up();
-		default:
-			throw new IllegalArgumentException("real enum breaking moment right here");
-		}
 	}
 	
 	protected BlockState getLeft(BlockRenderView view, Direction to, BlockPos pos) {
 		return view.getBlockState(getLeftPos(to, pos));
 	}
 	
-	protected BlockPos getLeftPos(Direction to, BlockPos pos) {
-		switch(to) {
-		case UP:
-		case DOWN:
-			return pos.west();
-		case NORTH:
-		case SOUTH:
-		case EAST:
-		case WEST:
-			return pos.offset(to.rotateYClockwise());
-		default:
-			throw new IllegalArgumentException("real enum breaking moment right here");
-		}
-	}
-	
 	protected BlockState getRight(BlockRenderView view, Direction to, BlockPos pos) {
 		return view.getBlockState(getRightPos(to, pos));
 	}
-	
-	protected BlockPos getRightPos(Direction to, BlockPos pos) {
-		switch(to) {
-		case UP:
-		case DOWN:
-			return pos.east();
-		case NORTH:
-		case SOUTH:
-		case EAST:
-		case WEST:
-			return pos.offset(to.rotateYCounterclockwise());
-		default:
-			throw new IllegalArgumentException("real enum breaking moment right here");
-		}
-	}
-	
+
 	protected BlockState getDown(BlockRenderView view, Direction to, BlockPos pos) {
 		return view.getBlockState(getDownPos(to, pos));
 	}
 	
-	protected BlockPos getDownPos(Direction to, BlockPos pos) {
-		switch(to) {
-		case UP:
-			//return pos.south();
-		case DOWN:
+	protected BlockPos getUpPos(Direction facing, BlockPos pos) {
+		if(facing == Direction.UP) {
 			return pos.north();
-		case NORTH:
-		case SOUTH:
-		case EAST:
-		case WEST:
+		} else if (facing == Direction.DOWN) {
+			return pos.south();
+		} else {
+			return pos.up();
+		}
+	}
+	
+	protected BlockPos getDownPos(Direction facing, BlockPos pos) {
+		if(facing == Direction.UP) {
+			return pos.south();
+		} else if(facing == Direction.DOWN) {
+			return pos.north();
+		} else {
 			return pos.down();
-		default:
-			throw new IllegalArgumentException("real enum breaking moment right here");
+		}
+	}
+	
+	protected BlockPos getLeftPos(Direction facing, BlockPos pos) {
+		if(facing.getAxis() == Direction.Axis.Y) {
+			return pos.west();
+		} else {
+			return pos.offset(facing.rotateYClockwise());
+		}
+	}
+
+	protected BlockPos getRightPos(Direction facing, BlockPos pos) {
+		if(facing.getAxis() == Direction.Axis.Y) {
+			return pos.east();
+		} else {
+			return pos.offset(facing.rotateYCounterclockwise());
 		}
 	}
 }
