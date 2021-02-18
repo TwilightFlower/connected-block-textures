@@ -88,7 +88,6 @@ public class CBTBakedModel extends ForwardingBakedModel {
 						}
 					}
 					
-					System.out.println(quad.nominalFace() + " " +  lowV1 + " " + lowV2);
 					// find center of low-v edge
 					lowV1.add(lowV2);
 					lowV1.scale(0.5f);

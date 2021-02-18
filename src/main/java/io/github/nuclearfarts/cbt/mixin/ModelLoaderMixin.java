@@ -90,7 +90,7 @@ public abstract class ModelLoaderMixin {
 			}
 			foundNewConfigs = !newConfigs.isEmpty();
 			if(foundNewConfigs) {
-				model = new CBTUnbakedModel(model, configs.toArray(new CTMConfig[configs.size()]));
+				model = new CBTUnbakedModel(model, newConfigs.toArray(new CTMConfig[newConfigs.size()]));
 			}
 		} while(foundNewConfigs);
 		return model;
