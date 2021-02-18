@@ -16,7 +16,7 @@ public class TopCTMSpriteProvider extends ConnectingSpriteProvider {
 	}
 
 	@Override
-	public Sprite getSpriteForSide(Direction side, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
-		return connectionMatcher.test(state, getUp(view, side, pos)) ? connects[0] : null;
+	public Sprite getSpriteForSide(Direction side, Direction upD, Direction leftD, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
+		return testUp(view, upD, pos, state) ? connects[0] : null;
 	}
 }

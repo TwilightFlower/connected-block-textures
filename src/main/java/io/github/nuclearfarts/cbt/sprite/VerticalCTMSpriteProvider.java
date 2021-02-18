@@ -16,9 +16,9 @@ public class VerticalCTMSpriteProvider extends ConnectingSpriteProvider {
 	}
 
 	@Override
-	public Sprite getSpriteForSide(Direction side, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
-		boolean down = testDown(view, side, pos, state);
-		boolean up = testUp(view, side, pos, state);
+	public Sprite getSpriteForSide(Direction side, Direction upD, Direction leftD, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
+		boolean down = testDown(view, upD, pos, state);
+		boolean up = testUp(view, upD, pos, state);
 		if(down && up) {
 			return connects[1];
 		} else if(down && !up) {

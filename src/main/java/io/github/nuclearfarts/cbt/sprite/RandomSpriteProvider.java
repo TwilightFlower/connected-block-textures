@@ -16,7 +16,7 @@ public class RandomSpriteProvider extends BaseSpriteProvider {
 	}
 
 	@Override
-	public Sprite getSpriteForSide(Direction side, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
+	public Sprite getSpriteForSide(Direction side, Direction upD, Direction leftD, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
 		return connects[random.nextInt(connects.length)];
 	}
 

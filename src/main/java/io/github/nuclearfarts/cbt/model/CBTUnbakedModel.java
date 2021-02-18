@@ -52,7 +52,6 @@ public class CBTUnbakedModel implements UnbakedModel {
 				spriteProviders.add(config.createSpriteProvider(config.getTileProvider().load(textureGetter)));
 			}
 			return new CBTBakedModel(baseModel.bake(loader, textureGetter, rotationContainer, modelId), spriteProviders.toArray(new SpriteProvider[spriteProviders.size()]));
-			//return config.createBakedModel(sprites, baseModel.bake(loader, textureGetter, rotationContainer, modelId));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

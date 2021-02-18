@@ -19,8 +19,8 @@ public class FullCTMSpriteProvider extends ConnectingSpriteProvider {
 	}
 
 	@Override
-	public Sprite getSpriteForSide(Direction side, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
-		BlockState[][] blocks = getAll(view, side, pos);
+	public Sprite getSpriteForSide(Direction side, Direction upD, Direction leftD, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
+		BlockState[][] blocks = getAll(view, upD, leftD, pos);
 		return this.connects[BITHACK_TO_CTM[awfulBitHack(blocks, state)]];
 	}
 	

@@ -15,5 +15,5 @@ public interface SpriteProvider {
 	boolean affectsBlock(BlockRenderView view, BlockState state, BlockPos pos);
 	boolean affectsDirection(Direction side);
 	boolean affectsSprite(QuadView quad, SpriteFinder finder);
-	Sprite getSpriteForSide(Direction side, BlockRenderView view, BlockState state, BlockPos pos, Random random);
+	Sprite getSpriteForSide(Direction side, Direction up, Direction left, BlockRenderView view, BlockState state, BlockPos pos, Random random);
 }

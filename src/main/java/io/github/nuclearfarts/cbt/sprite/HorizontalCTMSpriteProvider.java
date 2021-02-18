@@ -16,9 +16,9 @@ public class HorizontalCTMSpriteProvider extends ConnectingSpriteProvider {
 	}
 
 	@Override
-	public Sprite getSpriteForSide(Direction side, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
-		boolean left = testLeft(view, side, pos, state);
-		boolean right = testRight(view, side, pos, state);
+	public Sprite getSpriteForSide(Direction side, Direction upD, Direction leftD, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
+		boolean left = testLeft(view, leftD, pos, state);
+		boolean right = testRight(view, leftD, pos, state);
 		if(left && right) {
 			return connects[1];
 		} else if(left && !right) {

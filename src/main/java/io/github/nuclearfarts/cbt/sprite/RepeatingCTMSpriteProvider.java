@@ -22,7 +22,7 @@ public class RepeatingCTMSpriteProvider extends BaseSpriteProvider {
 	}
 
 	@Override
-	public Sprite getSpriteForSide(Direction side, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
+	public Sprite getSpriteForSide(Direction side, Direction upD, Direction leftD, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
 		int wPos = 0;
 		int hPos = 0;
 		switch(side.getAxis()) {

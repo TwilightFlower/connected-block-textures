@@ -7,7 +7,10 @@ import java.util.function.Predicate;
 
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 
 import io.github.nuclearfarts.cbt.util.function.ThrowingPredicate;
 

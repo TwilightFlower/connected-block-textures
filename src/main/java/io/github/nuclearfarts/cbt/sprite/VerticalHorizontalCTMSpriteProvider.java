@@ -1,4 +1,4 @@
-package io.github.nuclearfarts.cbt.model;
+package io.github.nuclearfarts.cbt.sprite;
 
 import java.util.Random;
 import net.minecraft.block.BlockState;
@@ -8,7 +8,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockRenderView;
 
 import io.github.nuclearfarts.cbt.config.ConnectingCTMConfig;
-import io.github.nuclearfarts.cbt.sprite.ConnectingSpriteProvider;
 
 public class VerticalHorizontalCTMSpriteProvider extends ConnectingSpriteProvider {
 
@@ -17,11 +16,11 @@ public class VerticalHorizontalCTMSpriteProvider extends ConnectingSpriteProvide
 	}
 
 	@Override
-	public Sprite getSpriteForSide(Direction side, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
-		boolean left = testLeft(view, side, pos, state);
-		boolean right = testRight(view, side, pos, state);
-		boolean down = testDown(view, side, pos, state);
-		boolean up = testUp(view, side, pos, state);
+	public Sprite getSpriteForSide(Direction side, Direction upD, Direction leftD, BlockRenderView view, BlockState state, BlockPos pos, Random random) {
+		boolean left = testLeft(view, leftD, pos, state);
+		boolean right = testRight(view, leftD, pos, state);
+		boolean down = testDown(view, upD, pos, state);
+		boolean up = testUp(view, upD, pos, state);
 		if(down && up) {
 			return connects[1];
 		} else if(down && !up) {

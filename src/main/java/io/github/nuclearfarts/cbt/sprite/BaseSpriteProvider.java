@@ -44,97 +44,19 @@ public abstract class BaseSpriteProvider implements SpriteProvider {
 		return tileMatcher == null ? true : tileMatcher.test(finder.find(quad, 0));
 	}
 	
-	protected BlockState[][] getAll(BlockRenderView view, Direction to, BlockPos pos) {
+	protected BlockState[][] getAll(BlockRenderView view, Direction upD, Direction leftD, BlockPos pos) {
 		BlockState[][] result = new BlockState[3][3];
-		BlockPos left = getLeftPos(to, pos);
-		BlockPos right = getRightPos(to, pos);
-		result[0][0] = getUp(view, to, left);
+		BlockPos left = pos.offset(leftD);
+		BlockPos right = pos.offset(leftD.getOpposite());
+		result[0][0] = view.getBlockState(left.offset(upD));
 		result[0][1] = view.getBlockState(left);
-		result[0][2] = getDown(view, to, left);
-		result[1][0] = getUp(view, to, pos);
+		result[0][2] = view.getBlockState(left.offset(upD.getOpposite()));
+		result[1][0] = view.getBlockState(pos.offset(upD));
 		result[1][1] = null;
-		result[1][2] = getDown(view, to, pos);
-		result[2][0] = getUp(view, to, right);
+		result[1][2] = view.getBlockState(pos.offset(upD.getOpposite()));
+		result[2][0] = view.getBlockState(right.offset(upD));
 		result[2][1] = view.getBlockState(right);
-		result[2][2] = getDown(view, to, right);
+		result[2][2] = view.getBlockState(right.offset(upD.getOpposite()));
 		return result;
-	}
-	
-	protected BlockState getUp(BlockRenderView view, Direction to, BlockPos pos) {
-		return view.getBlockState(getUpPos(to, pos));
-	}
-	
-	protected BlockPos getUpPos(Direction to, BlockPos pos) {
-		switch(to) {
-		case UP:
-			//return pos.north();
-		case DOWN:
-			return pos.south();
-		case NORTH:
-		case SOUTH:
-		case EAST:
-		case WEST:
-			return pos.up();
-		default:
-			throw new IllegalArgumentException("real enum breaking moment right here");
-		}
-	}
-	
-	protected BlockState getLeft(BlockRenderView view, Direction to, BlockPos pos) {
-		return view.getBlockState(getLeftPos(to, pos));
-	}
-	
-	protected BlockPos getLeftPos(Direction to, BlockPos pos) {
-		switch(to) {
-		case UP:
-		case DOWN:
-			return pos.west();
-		case NORTH:
-		case SOUTH:
-		case EAST:
-		case WEST:
-			return pos.offset(to.rotateYClockwise());
-		default:
-			throw new IllegalArgumentException("real enum breaking moment right here");
-		}
-	}
-	
-	protected BlockState getRight(BlockRenderView view, Direction to, BlockPos pos) {
-		return view.getBlockState(getRightPos(to, pos));
-	}
-	
-	protected BlockPos getRightPos(Direction to, BlockPos pos) {
-		switch(to) {
-		case UP:
-		case DOWN:
-			return pos.east();
-		case NORTH:
-		case SOUTH:
-		case EAST:
-		case WEST:
-			return pos.offset(to.rotateYCounterclockwise());
-		default:
-			throw new IllegalArgumentException("real enum breaking moment right here");
-		}
-	}
-	
-	protected BlockState getDown(BlockRenderView view, Direction to, BlockPos pos) {
-		return view.getBlockState(getDownPos(to, pos));
-	}
-	
-	protected BlockPos getDownPos(Direction to, BlockPos pos) {
-		switch(to) {
-		case UP:
-			//return pos.south();
-		case DOWN:
-			return pos.north();
-		case NORTH:
-		case SOUTH:
-		case EAST:
-		case WEST:
-			return pos.down();
-		default:
-			throw new IllegalArgumentException("real enum breaking moment right here");
-		}
 	}
 }
