@@ -13,7 +13,7 @@
   },
 
   "license": "LGPLv3",
-
+  "icon": "assets/connected_block_textures/icon.png",
   "environment": "client",
   "entrypoints": {
     "main": [
